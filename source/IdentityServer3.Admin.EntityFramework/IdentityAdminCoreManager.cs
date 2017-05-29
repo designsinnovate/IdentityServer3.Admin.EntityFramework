@@ -53,6 +53,8 @@ namespace IdentityServer3.Admin.EntityFramework
                 Schema = schema
             };
 
+            ClientConfigurationDbContextType = typeof(ClientConfigurationDbContext);
+
             if (createIfNotExist)
             {
                 
@@ -556,6 +558,9 @@ namespace IdentityServer3.Admin.EntityFramework
         #endregion
 
         #region Client
+
+        public Type ClientConfigurationDbContextType { get; set; }
+
         public async Task<IdentityAdminResult<ClientDetail>> GetClientAsync(string subject)
         {
             using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
@@ -613,7 +618,8 @@ namespace IdentityServer3.Admin.EntityFramework
 
         public Task<IdentityAdminResult<QueryResult<ClientSummary>>> QueryClientsAsync(string filter, int start, int count)
         {
-            using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+            //using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+            using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
             {
                 var query =
                     from client in db.Clients
