@@ -54,6 +54,7 @@ namespace IdentityServer3.Admin.EntityFramework
             };
 
             ClientConfigurationDbContextType = typeof(ClientConfigurationDbContext);
+            ScopeConfigurationDbContextType = typeof(ScopeConfigurationDbContext);
 
             if (createIfNotExist)
             {
@@ -144,9 +145,11 @@ namespace IdentityServer3.Admin.EntityFramework
 
         #region Scope
 
+        public Type ScopeConfigurationDbContextType { get; set; }
+
         public async Task<IdentityAdminResult<ScopeDetail>> GetScopeAsync(string subject)
         {
-            using (var db = new ScopeConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+            using (var db = (ScopeConfigurationDbContext)Activator.CreateInstance(ScopeConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
             {
                 int parsedId;
                 if (int.TryParse(subject, out parsedId))
@@ -189,7 +192,7 @@ namespace IdentityServer3.Admin.EntityFramework
 
         public Task<IdentityAdminResult<QueryResult<ScopeSummary>>> QueryScopesAsync(string filter, int start, int count)
         {
-            using (var db = new ScopeConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+            using (var db = (ScopeConfigurationDbContext)Activator.CreateInstance(ScopeConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
             {
                 var query =
                     from scope in db.Scopes
@@ -250,7 +253,7 @@ namespace IdentityServer3.Admin.EntityFramework
                 }
             }
             var efSCope = new Scope();
-            using (var db = new ScopeConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+            using (var db = (ScopeConfigurationDbContext)Activator.CreateInstance(ScopeConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
             {
                 try
                 {
@@ -272,7 +275,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out  parsedSubject))
             {
-                using (var db = new ScopeConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ScopeConfigurationDbContext)Activator.CreateInstance(ScopeConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -310,7 +313,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out  parsedSubject))
             {
-                using (var db = new ScopeConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ScopeConfigurationDbContext)Activator.CreateInstance(ScopeConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -341,7 +344,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out parsedSubject))
             {
-                using (var db = new ScopeConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ScopeConfigurationDbContext)Activator.CreateInstance(ScopeConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -378,7 +381,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedScopeId;
             if (int.TryParse(subject, out parsedSubject) && int.TryParse(id, out parsedScopeId))
             {
-                using (var db = new ScopeConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ScopeConfigurationDbContext)Activator.CreateInstance(ScopeConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -410,7 +413,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject, parsedScopeClaimSubject;
             if (int.TryParse(subject, out parsedSubject) && int.TryParse(scopeClaimSubject, out parsedScopeClaimSubject))
             {
-                using (var db = new ScopeConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ScopeConfigurationDbContext)Activator.CreateInstance(ScopeConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -446,7 +449,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out parsedSubject))
             {
-                using (var db = new ScopeConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ScopeConfigurationDbContext)Activator.CreateInstance(ScopeConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -489,7 +492,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject, parsedScopeSecretSubject;
             if (int.TryParse(subject, out parsedSubject) && int.TryParse(scopeSecretSubject, out parsedScopeSecretSubject))
             {
-                using (var db = new ScopeConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ScopeConfigurationDbContext)Activator.CreateInstance(ScopeConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -528,7 +531,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSecretId;
             if (int.TryParse(subject, out parsedSubject) && int.TryParse(id, out parsedSecretId))
             {
-                using (var db = new ScopeConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ScopeConfigurationDbContext)Activator.CreateInstance(ScopeConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -563,7 +566,7 @@ namespace IdentityServer3.Admin.EntityFramework
 
         public async Task<IdentityAdminResult<ClientDetail>> GetClientAsync(string subject)
         {
-            using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+            using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
             {
                 int parsedId;
                 if (int.TryParse(subject, out parsedId))
@@ -618,7 +621,6 @@ namespace IdentityServer3.Admin.EntityFramework
 
         public Task<IdentityAdminResult<QueryResult<ClientSummary>>> QueryClientsAsync(string filter, int start, int count)
         {
-            //using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
             using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
             {
                 var query =
@@ -686,7 +688,7 @@ namespace IdentityServer3.Admin.EntityFramework
             }
 
             var efClient = new Client();
-            using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+            using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
             {
                 try
                 {
@@ -721,7 +723,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out  parsedSubject))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -759,7 +761,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out  parsedSubject))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -789,7 +791,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out parsedSubject))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -825,7 +827,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedClientId;
             if (int.TryParse(subject, out parsedSubject) && int.TryParse(id, out parsedClientId))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -860,7 +862,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out parsedSubject))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -896,7 +898,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedObjectId;
             if (int.TryParse(subject, out parsedSubject) && int.TryParse(id, out parsedObjectId))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -931,7 +933,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out parsedSubject))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -966,7 +968,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedObjectId;
             if (int.TryParse(subject, out parsedSubject) && int.TryParse(id, out parsedObjectId))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -1001,7 +1003,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out parsedSubject))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -1036,7 +1038,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedObjectId;
             if (int.TryParse(subject, out parsedSubject) && int.TryParse(id, out parsedObjectId))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -1072,7 +1074,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out parsedSubject))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -1107,7 +1109,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedObjectId;
             if (int.TryParse(subject, out parsedSubject) && int.TryParse(id, out parsedObjectId))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -1142,7 +1144,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out parsedSubject))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -1177,7 +1179,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedObjectId;
             if (int.TryParse(subject, out parsedSubject) && int.TryParse(id, out parsedObjectId))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -1212,7 +1214,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out parsedSubject))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -1247,7 +1249,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedObjectId;
             if (int.TryParse(subject, out parsedSubject) && int.TryParse(id, out parsedObjectId))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -1282,7 +1284,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedSubject;
             if (int.TryParse(subject, out parsedSubject))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
@@ -1317,7 +1319,7 @@ namespace IdentityServer3.Admin.EntityFramework
             int parsedObjectId;
             if (int.TryParse(subject, out parsedSubject) && int.TryParse(id, out parsedObjectId))
             {
-                using (var db = new ClientConfigurationDbContext(_entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
+                using (var db = (ClientConfigurationDbContext)Activator.CreateInstance(ClientConfigurationDbContextType, _entityFrameworkServiceOptions.ConnectionString, _entityFrameworkServiceOptions.Schema))
                 {
                     try
                     {
